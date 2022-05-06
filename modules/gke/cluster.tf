@@ -38,6 +38,7 @@ module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster/"
   project_id                 = var.project_id
   name                       = "${var.environment}-${local.cluster_type}-cluster"
+  kubernetes_version         = "1.21.10-gke.2000"
   regional                   = true
   region                     = var.region
   network                    = module.vpc.network_name
