@@ -48,5 +48,12 @@ inputs = {
   project_id  = local.project_id
   region      = local.region
   environment = local.env
+  operator_ip = dependency.public_ip.outputs.ip
 }
 
+dependency "public_ip" {
+  config_path = "${get_terragrunt_dir()}/../public_ip"
+  mock_outputs = {
+    ip = "127.0.0.1"
+  }
+}
