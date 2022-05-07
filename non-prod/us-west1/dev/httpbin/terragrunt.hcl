@@ -4,14 +4,6 @@
 # maintainable: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
-# We override the terraform block source attribute here just for the QA environment to show how you would deploy a
-# different version of the module in a specific environment.
-terraform {
-  # source = "${include.envcommon.locals.base_source_url}?ref=v0.7.0"
-  source = "${include.envcommon.locals.base_source_url}"
-}
-
-
 # ---------------------------------------------------------------------------------------------------------------------
 # Include configurations that are common used across multiple environments.
 # ---------------------------------------------------------------------------------------------------------------------
@@ -29,23 +21,6 @@ include "envcommon" {
   expose = true
 }
 
-
 # ---------------------------------------------------------------------------------------------------------------------
 # We don't need to override any of the common parameters for this environment, so we don't specify any inputs.
 # ---------------------------------------------------------------------------------------------------------------------
-
-inputs = {
-  cluster_name           = dependency.gke.outputs.cluster_name
-  cluster_endpoint       = dependency.gke.outputs.kubernetes_endpoint
-  cluster_ca_certificate = dependency.gke.outputs.ca_certificate
-  chart                  = "${get_repo_root()}/charts/httpbin"
-}
-
-dependency "gke" {
-  config_path = "../gke"
-}
-
-dependency "istio" {
-  config_path = "../istio"
-}
-
