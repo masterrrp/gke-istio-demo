@@ -2,5 +2,5 @@
 # terragrunt.hcl configuration.
 locals {
   gcp_account_name = "non-prod" # TODO: support organizations and account switching with service account impersonation!
-  project_id       = "terraform-states-349403"
+  project_id       = "development-349403"
 }
