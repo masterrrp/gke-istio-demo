@@ -2,5 +2,5 @@
 # feed forward to the child modules.
 locals {
   environment = "stage"
-  project_id  = "concise-lambda-349403"
+  project_id  = "development-349403"
 }

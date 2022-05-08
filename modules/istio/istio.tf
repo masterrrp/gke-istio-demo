@@ -39,7 +39,7 @@ resource "helm_release" "istio_istiod" {
   depends_on = [kubernetes_namespace.istio_system, helm_release.istio_base]
 }
 
-resource "helm_release" "istio-ingressgateway" {
+resource "helm_release" "istio_ingressgateway" {
   name       = "istio-ingressgateway"
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "gateway"
@@ -50,4 +50,14 @@ resource "helm_release" "istio-ingressgateway" {
   namespace = "istio-ingress"
 
   depends_on = [kubernetes_namespace.istio_ingress, helm_release.istio_istiod]
+}
+
+data "kubernetes_service" "istio_ingressgateway" {
+  metadata {
+    name      = "istio-ingressgateway"
+    namespace = "istio-ingress"
+  }
+  depends_on = [
+    helm_release.istio_ingressgateway
+  ]
 }
