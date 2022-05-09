@@ -19,3 +19,7 @@
 build/
 */build/
 out/
+
+### direnv ###
+.direnv
+.envrc
