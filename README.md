@@ -7,7 +7,7 @@ repo](https://github.com/gruntwork-io/terragrunt-infrastructure-modules-example)
 
 This repo details the use of terragrunt, terraform, and helm to
 deploy a VPC, k8s cluster, istio (default profile), and HTTPBin across two environments (dev and stage) in a single GCP account all without duplicating any of the Terraform code. Because of Terragrunt there is just a single copy of
-the Terraform code, defined in the `/modules` folder, in the `/non-prod` folder we use
+the Terraform code, defined in the `/modules` folder, in the `/prod` folder we use
 `terragrunt.hcl` files that reference the modules and charts and fill in variables specific to each
 environment. Check out the dependency graph to the right for quick look into how the modules/charts are linked together.
 
@@ -33,8 +33,8 @@ There are a quite a few anti-patterns in here which are justified to simplify ge
    backend](https://www.terraform.io/docs/backends/types/gcs.html) to store the
    Terraform state. Alternatives, you can
    set the environment variable `TG_BUCKET_PREFIX` to set a custom prefix.
-3. Fill in your GCP `project_id` in `non-prod/account.hcl`, this is used for the terraform state bucket.
-4. Fill in your GCP `project_id` in `non-prod/stage/env.hcl` and `non-prod/dev/env.hcl` to declare which project is your dev and stage.
+3. Fill in your GCP `project_id` in `prod/account.hcl`, this is used for the terraform state bucket.
+4. Fill in your GCP `project_id` in `prod/shared/env.hcl` to declare which project to deploy the resources.
 5. You will need a GCP account and project, [create a free account here](https://cloud.google.com/free).
 6. Create a GCP service account with "Owner" permissions.
 7. Create a service account key, once created the key will be downloaded automatically.
@@ -44,19 +44,19 @@ There are a quite a few anti-patterns in here which are justified to simplify ge
 
 ### Deploying a single module
 
-1. `cd` into the module's folder (e.g. `cd non-prod/us-west1/dev/gke`).
+1. `cd` into the module's folder (e.g. `cd prod/us-west1/shared/gke`).
 2. Run `terragrunt plan` to see the changes you're about to apply.
 3. If the plan looks good, run `terragrunt apply`.
 
 ### Deploying all modules in a environment
 
-1. `cd` into the region folder (e.g. `cd non-prod/us-west1/dev`).
+1. `cd` into the region folder (e.g. `cd prod/us-west1/shared`).
 2. Run `terragrunt run-all plan` to see all the changes you're about to apply.
 3. If the plan looks good, run `terragrunt run-all apply`.
 
 ### Deploying all modules in a region
 
-1. `cd` into the region folder (e.g. `cd non-prod/us-west1`).
+1. `cd` into the region folder (e.g. `cd prod/us-west1`).
 2. Run `terragrunt run-all plan` to see all the changes you're about to apply.
 3. If the plan looks good, run `terragrunt run-all apply`.
 
@@ -83,7 +83,7 @@ Where:
 * **Region**: Within each account, there will be one or more, such as
   `us-east1` and `us-west1`, where you've deployed resources.
 
-* **Environment**: Within each region, there will be one or more "environments", such as `dev`, `stage`, etc. Typically,
+* **Environment**: Within each region, there will be one or more "environments", such as `shared`, `stage`, etc. Typically,
   an environment will correspond to a single VPC, which
   isolates that environment from everything else in that GCP account.
 
