@@ -1,0 +1,78 @@
+name: Terragrunt Output
+
+on:
+  workflow_call:
+    branches:
+      - 'main'
+      - 'dev'
+
+env:
+  tf_version: '1.1.9'
+  tg_version: '0.36.8'
+  prod_tf_working_dir: 'prod/'
+  dev_tf_working_dir: 'dev/'
+
+jobs:
+  prod_output:
+    name: Prod
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: ${{ env.tg_version }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.tf_version }}
+          terraform_wrapper: false
+
+      - name: Terragrunt run-all init
+        working-directory: ${{ env.prod_tf_working_dir }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.PROD_GOOGLE_CREDENTIALS }}
+        run: terragrunt run-all init
+      
+      - name: Terragrunt run-all output
+        working-directory: ${{ env.prod_tf_working_dir }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.PROD_GOOGLE_CREDENTIALS }}
+        run: terragrunt run-all output --terragrunt-non-interactive
+
+  dev_output:
+    name: Dev
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: ${{ env.tg_version }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.tf_version }}
+          terraform_wrapper: false
+
+      - name: Terragrunt run-all init
+        working-directory: ${{ env.dev_tf_working_dir }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
+        run: terragrunt run-all init
+      
+      - name: Terragrunt run-all output
+        working-directory: ${{ env.dev_tf_working_dir }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
+        run: terragrunt run-all output --terragrunt-non-interactive
