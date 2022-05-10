@@ -202,7 +202,7 @@ jobs:
       - name: teraform_output
         if: ${{ env.ACT }}
         id: teraform_output
-        working-directory: dev/us-west1/shared-non_istio/timestamp/
+        working-directory: dev/us-west1/shared-non-istio/timestamp/
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
         run: echo "::set-output name=load_balancer_ip::$(terragrunt output -raw load_balancer_ip)"
@@ -222,7 +222,7 @@ jobs:
         if: ${{ env.ACT }}
         run: |
           echo "test output: " 
-          echo ${{ needs.get_test_inputs.outputs.load_balancer_ip }}
+          echo ${{ needs.dev_get_test_inputs.outputs.load_balancer_ip }}
           pwd
 
       - name: Run k6 local test
@@ -230,6 +230,6 @@ jobs:
         uses: grafana/k6-action@v0.2.0
 
         env:
-          TIMESTAMP_LB_IP: ${{ needs.get_test_inputs.outputs.load_balancer_ip }}
+          TIMESTAMP_LB_IP: ${{ needs.dev_get_test_inputs.outputs.load_balancer_ip }}
         with:
           filename: tests/timestamp_functional.js
