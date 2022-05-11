@@ -45,19 +45,20 @@ jobs:
         working-directory: ${{ env.prod_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.PROD_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all init
+        run: terragrunt run-all init --terragrunt-non-interactive
       
       - name: Terragrunt run-all validate
         working-directory: ${{ env.prod_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.PROD_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all validate
+        run: terragrunt run-all validate --terragrunt-non-interactive
       
       - name: Terragrunt run-all plan
+        if: ${{ env.ACT }}
         working-directory: ${{ env.prod_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.PROD_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all plan
+        run: terragrunt run-all plan --terragrunt-non-interactive
 
   dev_validate:
     name: Validate Dev
@@ -90,19 +91,20 @@ jobs:
         working-directory: ${{ env.dev_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all init
+        run: terragrunt run-all init --terragrunt-non-interactive
       
       - name: Terragrunt run-all validate
         working-directory: ${{ env.dev_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all validate
+        run: terragrunt run-all validate --terragrunt-non-interactive
       
       - name: Terragrunt run-all plan
+        if: ${{ env.ACT }}
         working-directory: ${{ env.dev_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all plan
+        run: terragrunt run-all plan --terragrunt-non-interactive
 
   prod_apply:
     name: Apply Prod
@@ -197,7 +199,7 @@ jobs:
         working-directory: ${{ env.dev_tf_working_dir }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.DEV_GOOGLE_CREDENTIALS }}
-        run: terragrunt run-all init
+        run: terragrunt run-all init --terragrunt-non-interactive
 
       - name: teraform_output
         if: ${{ env.ACT }}
@@ -217,13 +219,6 @@ jobs:
       - name: Checkout
         if: ${{ env.ACT }}
         uses: actions/checkout@v2
-
-      - name: test_echo
-        if: ${{ env.ACT }}
-        run: |
-          echo "test output: " 
-          echo ${{ needs.dev_get_test_inputs.outputs.load_balancer_ip }}
-          pwd
 
       - name: Run k6 local test
         if: ${{ env.ACT }}
