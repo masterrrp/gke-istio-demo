@@ -12,7 +12,7 @@ environment. Check out the dependency graph to the right for quick look into how
 
 The `dev/` example is different in two main ways. First, the `dev/` example doesn't use istio. Second difference is httpbin has been swapped out for my own [python based timestamp sample app](https://github.com/masterrrp/timestamp). Since istio is not in place, I implented the service to be load balancer type.
 
-Both examples will include the following; VPC's with private subnet, pod subnet, svc subnet, cloud router, and firewall rules. GKE Private Cluster with default node pools replaced with custom node pool, control plane authorized networks, and shielded nodes. For the K8s resources you can expect deployments and services to be common. In the istio configuration e.g. `prod/` the sample application also includes the addition of the virtualservice to interfacet with the ingressgateway. 
+Both examples will include the following; VPC's with private subnet, pod subnet, svc subnet, cloud router, and firewall rules. GKE Private Cluster with default node pools replaced with custom node pool, control plane authorized networks, and shielded nodes. For the K8s resources you can expect deployments and services to be common. In the istio configuration e.g. `prod/` the sample application also includes the addition of the virtualservice to interface with the ingressgateway. 
 
 There are a quite a few anti-patterns in here which are mostly used to simplify getting started:
 - live repo and modules should be separated to allow 
