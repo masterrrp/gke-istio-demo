@@ -12,7 +12,7 @@ environment. Check out the dependency graph to the right for quick look into how
 
 The `dev/` example is different in two main ways. First, the `dev/` example doesn't use istio. Second difference is httpbin has been swapped out for my own [python based timestamp sample app](https://github.com/masterrrp/timestamp). Since istio is not in place, I implented the service to be load balancer type.
 
-Both examples will include the following; VPC's with private subnet, pod subnet, svc subnet, cloud router, and firewall rules. GKE Private Cluster with default node pools replaced with custom node pool, control plane authroized networks, and shielded nodes. For the K8s resources you can expect deployments and services to be common. In the istio configuration e.g. `prod/` the sample application also includes the addition of the virtualservice to interfacet with the ingressgateway. 
+Both examples will include the following; VPC's with private subnet, pod subnet, svc subnet, cloud router, and firewall rules. GKE Private Cluster with default node pools replaced with custom node pool, control plane authorized networks, and shielded nodes. For the K8s resources you can expect deployments and services to be common. In the istio configuration e.g. `prod/` the sample application also includes the addition of the virtualservice to interfacet with the ingressgateway. 
 
 There are a quite a few anti-patterns in here which are mostly used to simplify getting started:
 - live repo and modules should be separated to allow 
@@ -21,6 +21,7 @@ There are a quite a few anti-patterns in here which are mostly used to simplify 
   - module version locking
 - similar reasons for separating out the helm charts e.g. the httpbin chart
   
+
 Check out the [TODO List](#TODO-List) to get an idea of other items I'm considering adding down the road.
 
 <!-- <br clear="right"/> -->
@@ -31,7 +32,7 @@ For the sake of brevity this section is focused on the `dev/` account.
 
 ### Think globally, `act` locally
 
-By using [act](https://github.com/nektos/act) you can  run the github workflows locally. I would just stick to `act` as it's less work to get up and running and offers more functionality however you do have a second option, using `terragrunt` directly, you can find the [terragrunt instructions here](TERRAGRUNT.md). The main caveat is the `act` workflow method is opinionated has more features such as automated tests. After you make it through this README it is defineitly worthwhile diving deeper into the act project. 
+By using [act](https://github.com/nektos/act) you can  run the Github workflows locally. I would just stick to `act` as it's less work to get up and running and offers more functionality however you do have a second option, using `terragrunt` directly, you can find the [terragrunt instructions here](TERRAGRUNT.md). The main caveat is the `act` workflow method is opinionated has more features such as automated tests. After you make it through this README it is definitely worthwhile diving deeper into the act project. 
 
 #### Pre-requisites
 
@@ -64,9 +65,9 @@ By using [act](https://github.com/nektos/act) you can  run the github workflows 
     - `dev/shared-non-istio/env.hcl` to declare which project to deploy the resources.
 
 11. Optionally, update the `bucket` parameter in the root `terragrunt.hcl`. We use GCS [as a Terraform
-   backend](https://www.terraform.io/docs/backends/types/gcs.html) to store the
-   Terraform state. Optionally you can
-   set the environment variable `TG_BUCKET_PREFIX` to set a custom prefix.
+      backend](https://www.terraform.io/docs/backends/types/gcs.html) to store the
+      Terraform state. Optionally you can
+      set the environment variable `TG_BUCKET_PREFIX` to set a custom prefix.
 
 **Note:** If you are interested in the `prod/` account, it's pretty simple. Any where you see `dev` swap it to `prod` and `DEV` swap it to `PROD`.
 
