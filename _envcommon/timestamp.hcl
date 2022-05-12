@@ -35,7 +35,7 @@ locals {
   # Expose the base source URL so different versions of the module can be deployed in different environments. This will
   # be used to construct the terraform block in the child terragrunt configurations.
   # base_source_url = "git::git@github.com:gruntwork-io/terragrunt-infrastructure-modules-example.git//mysql"
-  base_source_url = "${get_repo_root()}/modules//httpbin"
+  base_source_url = "${get_repo_root()}/modules//timestamp"
 }
 
 
@@ -48,7 +48,6 @@ inputs = {
   project_id             = local.project_id
   region                 = local.region
   cluster_name           = dependency.gke.outputs.cluster_name
-  chart                  = "${get_repo_root()}/charts/httpbin"
 }
 
 dependency "gke" {
@@ -56,9 +55,4 @@ dependency "gke" {
   mock_outputs = {
     cluster_name        = "example"
   }
-}
-
-dependency "istio" {
-  config_path  = "${get_terragrunt_dir()}/../istio"
-  skip_outputs = true
 }
