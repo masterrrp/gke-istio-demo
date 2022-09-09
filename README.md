@@ -135,7 +135,7 @@ Where:
 - [ ] consider breaking out the networking portion of the gke module
 - [ ] Make workflow DRYer, using composite actions
 - [ ] Add documentation about workflows
-- [x] Consider adding direnv to the docs for ease of use
+- [ ] Consider adding direnv to the docs for ease of use
 - [ ] Break this repo down
   - [ ] Move httpbin chart to it's own repo
   - [ ] Move tf modules to their own repo
